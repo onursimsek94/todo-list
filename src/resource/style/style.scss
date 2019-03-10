@@ -1,0 +1,332 @@
+@mixin app-background {
+  background: rgb(170,90,101);
+  background: -moz-linear-gradient(left, rgb(170,90,101) 0%, rgb(129,71,96) 50%, rgb(80,43,90) 100%);
+  background: -webkit-linear-gradient(left, rgb(170,90,101) 0%,rgb(129,71,96) 50%,rgb(80,43,90) 100%);
+  background: linear-gradient(to right, rgb(170,90,101) 0%,rgb(129,71,96) 50%,rgb(80,43,90) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#aa5a65', endColorstr='#502b5a',GradientType=1 );
+}
+
+%input-shared {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  padding: 5px;
+  font-size: 20px;
+  font-weight: lighter;
+  width: 100%;
+}
+
+html, body, #app, #app > div {
+  @include app-background();
+  font-family: 'Montserrat', sans-serif;
+  font-weight: lighter;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.app-container {
+  display: flex;
+
+  .left-side {
+    width: 280px;
+    background-color: #fff;
+  }
+
+  .right-side {
+    width: calc(100% - 280px);
+
+    .todo-list-container {
+      width: 95%;
+      height: calc(100% - 49px);
+      margin-left: 2.5%;
+      overflow: scroll;
+
+      .show-completed-todo {
+        cursor: pointer;
+        width: 200px;
+        margin: 15px 0;
+        padding: 4px;
+        border-radius: 5px;
+        background-color: #773f5a;
+        font-size: 12px;
+        text-align: center;
+        color: #fff;
+      }
+    }
+  }
+}
+
+.search-container {
+  display: flex;
+  background-color: rgb(87, 46, 73);
+  color: #fff;
+  padding: 8px;
+
+  i {
+    margin-top: 8px;
+  }
+
+  input {
+    @extend %input-shared;
+    width: 215px;
+
+    &::placeholder {
+      color: rgba($color: #fff, $alpha: .5);
+    }
+  }
+}
+
+.category-list-container {
+  height: 89%;
+  overflow: scroll;
+
+  .category-list-item {
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+
+    :first-child {
+      display: flex;
+
+      i {
+        margin-right: 5px;
+        color: rgb(185, 185, 185);
+      }
+
+      div {
+        margin-left: 5px;
+      }
+    }
+
+    :last-child {
+      margin-right: 5px;
+    }
+
+    &.selected {
+      background-color: rgb(224, 238, 250);
+    }
+  }
+}
+
+.create-category-button {
+  cursor: pointer;
+  padding: 10px;
+  border-top: 1px solid rgb(222, 222, 222);
+  color: rgb(49, 138, 214);
+
+  i {
+    padding-right: 10px;
+    font-size: 18px;
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  background-color: rgb(104, 55, 88);
+  color: #fff;
+  padding: 15px;
+
+  .header-menu {
+    cursor: pointer;
+
+    .header-menu-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      z-index: 1;
+      width: 165px;
+      padding: 5px;
+      background-color: rgb(104, 55, 88);
+      font-size: 14px;
+
+      div {
+        padding: 8px;
+      }
+    }
+
+    &:hover .header-menu-content {
+      display: block;
+    }
+  }
+}
+
+.add-todo-container {
+  display: flex;
+  background-color: rgb(112, 60, 89);
+  color: #fff;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  padding: 6px;
+  border-radius: 5px;
+
+  i {
+    margin-top: 7px;
+  }
+
+  input {
+    @extend %input-shared;
+    font-size: 17px;
+
+    &::placeholder {
+      color: rgba($color: #fff, $alpha: .5);
+    }
+  }
+}
+
+.todo-item-container {
+  display: flex;
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 14px;
+  margin-bottom: 1px;
+
+  :last-child {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 13px;
+  }
+
+  &.selected {
+    background-color: rgb(224, 242, 254);
+  }
+
+  &.completed {
+    background-color: rgb(212, 185, 193);
+    color: rgb(92, 60, 64);
+    text-decoration: line-through;
+  }
+
+  &.selected.completed {
+    background-color: rgb(185, 172, 191);
+    color: rgb(92, 60, 64);
+    text-decoration: line-through;
+  }
+}
+
+.checkbox {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+
+  input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+
+    &:checked ~ .checkmark {
+      border-color: rgb(157, 132, 140);
+    }
+
+    &:checked ~ .checkmark:after {
+      display: block;
+    }
+  }
+
+  .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 15px;
+    width: 15px;
+    border: 1px solid rgb(166, 166, 166);
+    border-radius: 5px;
+
+    &:after {
+      content: "";
+      position: absolute;
+      display: none;
+      left: 7px;
+      top: -7px;
+      width: 7px;
+      height: 18px;
+      border: solid rgb(157, 132, 140);
+      border-width: 0 2px 2px 0;
+      -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+      transform: rotate(45deg);
+    }
+  }
+}
+
+.modal {
+  width: 400px;
+  height: 125px;
+  border-radius: 5px;
+
+  &.with-textarea {
+    height: 200px;
+  }
+}
+
+.overlay {
+  top: -500px;
+  background: rgba(0, 0, 0, .4);
+}
+
+.modal-content {
+  .title {
+    text-align: center;
+  }
+
+  input, textarea {
+    width: 95%;
+    margin-top: 20px;
+    padding: 8px;
+    font-size: 15px;
+    font-weight: lighter;
+    border: 1px solid rgb(214, 214, 214);
+    border-radius: 5px;
+  }
+
+  textarea {
+    resize: none;
+  }
+
+  .buttons {
+    position: absolute;
+    bottom: 10px;
+    right: 20px;
+
+    :first-child, .delete-button {
+      cursor: pointer;
+      width: 100px;
+      margin-right: 5px;
+      padding: 8px;
+      border: 1px solid rgb(214, 214, 214);
+      border-radius: 2px;
+      outline: none;
+      color: rgb(115, 114, 114);
+    }
+
+    :last-child {
+      cursor: pointer;
+      width: 100px;
+      padding: 8px;
+      background-color: rgb(49, 138, 214);
+      border: 1px solid rgb(49, 138, 214);
+      border-radius: 2px;
+      outline: none;
+      color: #fff;
+
+      &.disabled {
+        background-color: rgb(151, 194, 233);
+        border: 1px solid rgb(151, 194, 233);
+      }
+    }
+  }
+}
+
